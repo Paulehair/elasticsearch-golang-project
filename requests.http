@@ -1,0 +1,26 @@
+### Post new book
+
+POST http://localhost:8080/books HTTP/1.1
+Content-Type: application/json
+
+{
+    "id": "",
+	"title": "Hello World",
+	"abstract": "C'est l'histoire d'un nouveau projet de code",
+	"author": "moi",
+	"category": "Science Fiction",
+	"isbn": "123469420",
+	"publicationDate": "28-07-2021"
+}
+
+### Search a book by title
+
+GET http://localhost:8080/books?key=title&value=Hello HTTP/1.1
+
+### Search a book by abstract
+
+GET http://localhost:8080/books?key=abstract&value=histoire HTTP/1.1
+
+### Search a book by author
+
+GET http://localhost:8080/books?key=author&value=moi HTTP/1.1
