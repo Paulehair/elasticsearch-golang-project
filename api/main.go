@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/Paulehair/elasticsearch-golang-project/config"
 	"github.com/Paulehair/elasticsearch-golang-project/controllers"
 
 	"log"
@@ -14,7 +15,7 @@ func main() {
 	r := mux.NewRouter()
 
 	log.Println("Connecting to database...")
-	config.InitES()
+	config.InitDB()
 
 	r.HandleFunc("/books", controllers.PostBook).Methods("POST")
 	r.HandleFunc("/books", controllers.GetBook).Methods("GET")

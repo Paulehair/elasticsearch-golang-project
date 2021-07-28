@@ -5,14 +5,15 @@ import (
 	"github.com/olivere/elastic/v7"
 
 	"context"
+	"encoding/json"
+	"errors"
 	"log"
 	"time"
-	"errors"
 )
 
 // ES client setup
 
-var EsClient = *elastic.Client
+var EsClient *elastic.Client
 
 func InitDB() {
 	ctx := context.Background()
@@ -49,7 +50,7 @@ func StartESClient() {
 
 		if err != nil {
 			log.Println("Failed to connect, retrying in 5 seconds...")
-			time.sleep(5 * time.Second)
+			time.Sleep(5 * time.Second)
 			continue
 		}
 
