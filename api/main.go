@@ -1,12 +1,25 @@
 package main
 
 import (
-	"fmt"
+	"github.com/Paulehair/elasticsearch-golang-project/controllers"
 
-	"github.com/google/uuid"
+	"log"
+	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 func main() {
-	uuid := uuid.NewString()
-	fmt.Println(uuid)
+	log.Println("Starting server...")
+	r := mux.NewRouter()
+
+	log.Println("Connecting to database...")
+	config.InitES()
+
+	r.HandleFunc("/books", controllers.PostBook).Methods("POST")
+	r.HandleFunc("/books", controllers.GetBook).Methods("GET")
+
+	log.Println("Server running on localhost:8080!")
+
+	log.Fatal(http.ListenAndServe(":8080", r))
 }
