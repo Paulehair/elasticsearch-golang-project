@@ -24,14 +24,16 @@ func InitDB() {
 		exists, err := EsClient.IndexExists("books").Do(ctx)
 
 		if err != nil {
-			log.Println("Error:", err)
+			log.Println("Error 1:", err)
+			time.Sleep(5 * time.Second)
 			continue
 		}
 
 		if !exists {
 			_, err := EsClient.CreateIndex("books").BodyString(models.BookMapping).Do(ctx)
 			if err != nil {
-				log.Println("Error:", err)
+				log.Println("Error 2:", err)
+				time.Sleep(5 * time.Second)
 			}
 			log.Println("ES connected.")
 			break
@@ -49,7 +51,7 @@ func StartESClient() {
 		client, err := elastic.NewClient(elastic.SetURL("http://elasticsearch:9200"), elastic.SetSniff(false), elastic.SetHealthcheck(false))
 
 		if err != nil {
-			log.Println("Failed to connect, retrying in 5 seconds...")
+			log.Println("Failed to connect, retrying in 5s")
 			time.Sleep(5 * time.Second)
 			continue
 		}
@@ -79,13 +81,15 @@ func CreateBook(ctx context.Context, book *models.Book) (string, error) {
 	}
 
 	res, err := EsClient.Index().Index("books").BodyJson(s).Do(ctx)
+
 	if err != nil {
 		return "", errors.New("error insert book")
 	}
+
 	return res.Result, nil
 }
 
-func SearchBooks(ctx context.Context, key, value string) ([]models.Book, error) {
+func GetBooks(ctx context.Context, key, value string) ([]models.Book, error) {
 	searchSource := elastic.NewSearchSource()
 	searchSource.Query(elastic.NewMatchQuery(key, value))
 
